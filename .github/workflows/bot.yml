@@ -41,4 +41,4 @@ jobs:
         echo "Проверяем установку пакетов..."
         R -e "library(telegram.bot); library(dplyr); library(stringr); cat('✅ Пакеты загружены успешно\n')"
         echo "Запускаем основную программу..."
-        timeout 350m Rscript bot.R
+        timeout 350m Rscript bot.r
