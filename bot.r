@@ -1,6 +1,43 @@
-library(telegram.bot)
-library(dplyr)
-library(stringr)
+# ============================================
+# ENGLISH VERBS TELEGRAM BOT
+# Автоматическая установка пакетов при необходимости
+# ============================================
+
+cat("🔧 Initializing bot...\n")
+
+# Список необходимых пакетов
+required_packages <- c("telegram.bot", "dplyr", "stringr")
+
+# Функция для установки пакетов
+install_if_missing <- function(packages) {
+  for (pkg in packages) {
+    if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
+      cat("📦 Installing package:", pkg, "\n")
+      tryCatch({
+        install.packages(pkg, repos = "https://cloud.r-project.org/", quiet = TRUE)
+        cat("✅ Package", pkg, "installed\n")
+      }, error = function(e) {
+        cat("⚠️ Could not install", pkg, ":", e$message, "\n")
+      })
+    }
+  }
+}
+
+# Устанавливаем недостающие пакеты
+install_if_missing(required_packages)
+
+# Загружаем пакеты
+cat("📚 Loading packages...\n")
+for (pkg in required_packages) {
+  if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
+    stop("❌ Failed to load package: ", pkg)
+  }
+}
+cat("✅ All packages loaded successfully\n")
+
+
+
+
 
 # Полная база данных неправильных глаголов с исправлениями
 verbs_data <- data.frame(
@@ -423,6 +460,7 @@ callback_handler <- function(bot, update) {
 
 # Получаем токен из переменных окружения
 BOT_TOKEN <- Sys.getenv("BOT_TOKEN")
+#BOT_TOKEN <- "7906046158:AAGaRY-Dwqi3yc-e_7_J2rRaLN64dkLAfSU"
 if (BOT_TOKEN == "") {
   stop("Токен бота не найден! Установите переменную BOT_TOKEN")
 }
@@ -456,3 +494,5 @@ run_bot <- function() {
 
 # Запускаем бота
 run_bot()
+
+
